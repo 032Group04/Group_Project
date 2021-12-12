@@ -4,7 +4,9 @@
     <root id="1">
       <ServerVersion>10.15.2.0</ServerVersion>
     </root>
-    <schema id="2" parent="1" name="APP"/>
+    <schema id="2" parent="1" name="APP">
+      <Current>1</Current>
+    </schema>
     <schema id="3" parent="1" name="GROUP_DB"/>
     <schema id="4" parent="1" name="NULLID"/>
     <schema id="5" parent="1" name="SQLJ"/>
@@ -53,6 +55,7 @@
       <ColNames>REF_USER</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexName>SQL0000000000-a4bcc063-017d-ade4-5535-000007608480</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
