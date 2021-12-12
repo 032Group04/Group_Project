@@ -1,18 +1,36 @@
 package fr.cnam.group;
 
-import javax.sql.DataSource;
+import org.apache.derby.jdbc.EmbeddedDriver;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import org.apache.derby.jdbc.EmbeddedDriver;
 import java.sql.*;
 
-public class SQLConnexion {
+public class SQLConnexion implements ActionListener {
 
-    public String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-    public static String host = "jdbc:derby:database";
+    public String driverPath = "org.apache.derby.jdbc.EmbeddedDriver";
+    public static String defaultURL = "jdbc:derby:database";
+    private ConnectDialog dialog;
+    private String host;
+    private String database;
+    private String user;
+    private String password;
+    private String url;
     private Connection connection;
-    public SQLConnexion() throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        Class.forName(driver).getConstructor().newInstance();
+
+    public SQLConnexion()  {
+        EmbeddedDriver driver = new EmbeddedDriver();
+
         connection = null;
+    }
+
+    public void openConnect(MyWindow owner){
+        dialog = new ConnectDialog(this);
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
 
@@ -20,6 +38,7 @@ public class SQLConnexion {
         try{
             connection = DriverManager.getConnection(url, user, password);
             if (connection.isValid(0)) {
+                connection.setSchema("GROUP_DB");
                 JOptionPane.showMessageDialog(null,"connexion réussie","succès",
                         JOptionPane.WARNING_MESSAGE);
 
@@ -65,5 +84,24 @@ public class SQLConnexion {
         }
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("dialog event");
+        if (e.getSource() == dialog.getButtonOK()) {
+//            host = dialog.getHostField().getText();
+//            database = dialog.getDatabaseField().getText();
+//            user = dialog.getUserField().getText();
+//            password = dialog.getPasswordField().getText();
+//            url = host + database + "?useSSL=false&serverTimezone=UTC";
+//            connect(url, user, password);
+            connect(SQLConnexion.defaultURL ,"admin","password");
+        }
+        else if(e.getSource() == dialog.getButtonDisconnect()){
+            EndConnection();
+        }
+    }
 }

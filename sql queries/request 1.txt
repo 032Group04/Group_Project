@@ -1,0 +1,30 @@
+DROP TABLE USERS;
+
+CREATE TABLE users
+(
+    ref_user    INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY (Start with 1, Increment by 1),
+    nom_user    VARCHAR(50)                                                            NOT NULL,
+    prenom_user VARCHAR(50)                                                            NOT NULL,
+    date_user   DATE                                                                   NOT NULL,
+    statut_user VARCHAR(20) CHECK ( statut_user IN ('administrateur', 'particulier') ) NOT NULL
+);
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Abitbol','Georges','11/23/1978','administrateur');
+
+
+UPDATE users
+SET statut_user = 'particulier'
+WHERE ref_user = 1;
+
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Baylac','Olivier','08/07/1989','administrateur');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Cartman','Eric','05/10/1991','particulier');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Sanchez','Rick','02/18/1961','particulier');
+
+SELECT * FROM users;

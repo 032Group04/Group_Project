@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Sun Dec 12 10:19:51 UTC 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-017d-ae27-e6e8-000007603bb0 
-on database directory C:\Users\aperi\IdeaProjects\Group_Project\database with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@7aec35a 
-Loaded from file:/C:/Users/aperi/AppData/Roaming/JetBrains/IntelliJIdea2021.3/jdbc-drivers/Apache%20Derby/10.15.2.0/derby-10.15.2.0.jar
-java.vendor=JetBrains s.r.o.
-java.runtime.version=11.0.13+7-b1751.19
+Sun Dec 12 16:37:40 CET 2021:
+Amorçage de Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585) : instance a816c00e-017d-af4a-d519-00000d0a2c08 
+dans le répertoire de base de données C:\Users\aperi\IdeaProjects\Group_Project\database avec le chargeur de classe jdk.internal.loader.ClassLoaders$AppClassLoader@1d44bcfa
+Chargé de file:/C:/Users/aperi/IdeaProjects/Group_Project/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=17.0.1+12-LTS-39
 user.dir=C:\Users\aperi\IdeaProjects\Group_Project
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null
-Database Class Loader started - derby.database.classpath=''
+Chargeur de classe de la base de données démarré - derby.database.classpath = ''

@@ -1,0 +1,4 @@
+
+
+* créer un login utilisant id et mot de passe, si id = particulier -> connecter en interdisant accès à modifier et ajouter (et limiter la taille des saisies du menu consulter pour éviter incrustation de code)
+* créer classes particulier et admin héritant de classe utilisateur la classe admin génère un identifiant admin et la classe particulier génère un identifiant une methode register() surchargée
