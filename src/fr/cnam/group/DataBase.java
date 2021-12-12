@@ -8,6 +8,6 @@ public class DataBase {
     private Connection connection;
 
     public DataBase(SQLConnexion sqlconnect){
-        connection = sqlconnect.connect();
+        //connection = sqlconnect.connect();
     }
 }

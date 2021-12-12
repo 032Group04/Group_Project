@@ -28,3 +28,9 @@ INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
 VALUES ('Sanchez','Rick','02/18/1961','particulier');
 
 SELECT * FROM users;
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(     'derby.user.baylac_olivier_2', 'password');
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.database.fullAccessUsers', 'baylac_olivier_administrateur');
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.user.baylac_olivier_administrateur', null);

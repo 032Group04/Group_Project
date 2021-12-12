@@ -9,7 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 public class Main {
-    SQLConnexion sqlConnexion;
+    public static SQLConnexion sqlConnect;
+
     public static void main(String[] args) throws Exception {
 //        Main main = new Main();
 //        try {
@@ -19,6 +20,9 @@ public class Main {
 //        }
 //
 //        main.sqlConnexion.connect(SQLConnexion.defaultURL ,"admin","password");
+
+        //Administrateur administrateur = new Administrateur("Baylac","Olivier","1989-11-23",2);
+
 
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -42,7 +46,7 @@ public class Main {
         myWindow.setContentPane(menu1.getMenuPrincipal());
         myWindow.setMinimumSize(new Dimension(600,600));
 
-        SQLConnexion sqlConnect = new SQLConnexion();
+        sqlConnect = new SQLConnexion();
         //ouverture de la connexion à la bd
 
 
@@ -90,7 +94,7 @@ public class Main {
 
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (sqlConnect.getConnection() != null && sqlConnect.getConnection().isValid(0)) {
+                    if (sqlConnect.getConnection() != null && sqlConnect.getConnection().isValid(0)) { // ajouter condition administrateur
 
                         topMenu.getReturnToMain().setVisible(true);
                         topMenu.getReturnToMain().addActionListener(new ActionListener() {
@@ -109,7 +113,7 @@ public class Main {
                             public void actionPerformed(ActionEvent e) {
 
                                 /*ouverture du menu ajouter un utilisateur*/
-                                AjouterUser ajouterUser = new AjouterUser(sqlConnect.getConnection());
+                                AjouterUser ajouterUser = new AjouterUser();
                                 myWindow.setContentPane(ajouterUser.getPanelAjouterUser());
                                 ajouterUser.getValiderButton().addActionListener(new ActionListener() {
                                     @Override

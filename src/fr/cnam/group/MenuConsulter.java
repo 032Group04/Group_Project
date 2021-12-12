@@ -91,7 +91,8 @@ public class MenuConsulter {
 
                     System.out.println("bouton valider activé");
                     if (choice == Choice.user ) {
-                        sendQuery( (selectAllBox.isSelected()) ? trySelect : createUserQuery());
+                        showThanks();
+                        showResults(Main.sqlConnect.sendQuery( (selectAllBox.isSelected()) ? trySelect : createUserQuery() ) );
 
                         //sendQuery("SELECT * FROM USERS");
                     }
@@ -121,6 +122,13 @@ public class MenuConsulter {
         });
     }
 
+
+    public void showResults(ResultSet resultUser) throws SQLException {
+        ResultsTableModel resultsTableModel = new ResultsTableModel(resultUser);
+        resultsTable.setModel(resultsTableModel);
+        resultsTable.setVisible(true);
+        consultPane.updateUI();
+    }
 
     public String createUserQuery() {
         System.out.println("debut creation query utilisateur");
@@ -184,20 +192,7 @@ public class MenuConsulter {
         return String.format(fullSelect, id, opNom, whereNom, opPrenom, wherePrenom, opDate, whereDate, opStatut, whereStatut);
     }
 
-    public void sendQuery(String query) throws SQLException {
-        showThanks();
-        try (Statement statement = connection.createStatement()) {
-            fullSelect = query;
-            System.out.println(fullSelect);
-            ResultSet resultTache = statement.executeQuery(fullSelect);
-            ResultsTableModel resultsTableModel = new ResultsTableModel(resultTache);
-            resultsTable.setModel(resultsTableModel);
-            resultsTable.setVisible(true);
-            consultPane.updateUI();
 
-
-        }
-    }
 
     public void showThanks() {
         if (firstQuery) {

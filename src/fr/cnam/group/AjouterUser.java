@@ -24,10 +24,11 @@ public class AjouterUser {
     private int addedUserId;
     private Connection connection;
 
+    private Utilisateur utilisateur;
 
-    public AjouterUser(Connection connect) {
+    public AjouterUser() {
         addedUserId = 0;
-        connection = connect;
+        connection = Main.sqlConnect.getConnection();
         query = "INSERT INTO USERS (nom_User, prenom_User, date_User) " +
                 "VALUES ('%s', '%s', '%s')";
     }
@@ -57,7 +58,7 @@ public class AjouterUser {
         }
     }
 
-    public int setId() throws SQLException {
+    public int checkId() throws SQLException {
         String selectQuery = "";
         ResultSet slct;
 

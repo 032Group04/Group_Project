@@ -1,4 +1,8 @@
 
 
-* créer un login utilisant id et mot de passe, si id = particulier -> connecter en interdisant accès à modifier et ajouter (et limiter la taille des saisies du menu consulter pour éviter incrustation de code)
+* ajouter condition interdisant accès à modifier et ajouter
 * créer classes particulier et admin héritant de classe utilisateur la classe admin génère un identifiant admin et la classe particulier génère un identifiant une methode register() surchargée
+* créer un trigger supprimant l'entrée users en cas de suppression du compte admin et un trigger supprimant le compte admin en cas de suppression d'un administrateur
+* créer un trigger modifiant statut utilisateur en cas de changement authorisation et créer un trigger modifiant statut
+* limiter la taille des saisies du menu consulter pour éviter incrustation de code
+* ajouter un Utilisateur static pour utilisateur courant
