@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class SQLConnexion {
 
     public String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-    public static String host = "jdbc:derby:database;create=true";
+    public static String host = "jdbc:derby:database";
     private Connection connection;
     public SQLConnexion() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Class.forName(driver).newInstance();
