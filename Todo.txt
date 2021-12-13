@@ -6,3 +6,7 @@
 * créer un trigger modifiant statut utilisateur en cas de changement authorisation et créer un trigger modifiant statut
 * limiter la taille des saisies du menu consulter pour éviter incrustation de code
 * ajouter un Utilisateur static pour utilisateur courant
+* créer une classe d'exception RestrictedUserException
+* fusionner ref_user et identifiant
+* créer une classe SearchPane
+

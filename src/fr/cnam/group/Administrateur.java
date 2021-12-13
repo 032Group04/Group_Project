@@ -1,8 +1,10 @@
 package fr.cnam.group;
 
+import java.sql.SQLException;
+
 public class Administrateur extends Utilisateur{
 
-    private String setAdminQuery = "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
+    private String setStatutQuery = "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
             "    'derby.database.fullAccessUsers', '%s')";
 
     public Administrateur(String nom, String prenom, String date, int ref) throws Exception {
@@ -11,7 +13,8 @@ public class Administrateur extends Utilisateur{
 
 
     @Override
-    public void register(String password) {
+    public void register(String password) throws SQLException {
+        super.register(password);
 
 
     }

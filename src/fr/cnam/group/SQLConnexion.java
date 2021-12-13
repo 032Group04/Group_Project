@@ -5,8 +5,6 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
-import org.apache.derby.jdbc.EmbeddedDriver;
 import java.sql.*;
 
 public class SQLConnexion implements ActionListener {
@@ -114,6 +112,8 @@ public class SQLConnexion implements ActionListener {
         }
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("dialog event");
@@ -126,65 +126,28 @@ public class SQLConnexion implements ActionListener {
             user = dialog.getUserField().getText();
             password = dialog.getPasswordField().getText();
 
-            if(connect(SQLConnexion.defaultURL ,user,password)){
+            if(connect(SQLConnexion.defaultURL ,user,password)) {
                 System.out.println("connection is valid");
 
-                /*
-                si connection réussie, vérification du statut de l'utilisateur dans la base de données.
-                 */
-
-                String[] userDatas = user.split("_");
-                for(String s : userDatas){
-                    System.out.println("userData : "+ s);
-                }
-                String checkQuery = String.format("SELECT * FROM users \n" +
-                        "WHERE nom_user = '%s'AND\n"+
-                        "prenom_user = '%s' AND \n"+
-                        "ref_user = %d",Utilisateur.formatNames(userDatas[0]),Utilisateur.formatNames(userDatas[1]),Integer.parseInt(userDatas[2]));
-
-
-                try {
-                    int ref;
-                    String nom;
-                    String prenom;
-                    String date;
-                    String statut;
-
-                    Statement statement = connection.createStatement();
-                    System.out.println("query : " + checkQuery);
-                    ResultSet userResult = statement.executeQuery(checkQuery);
-                    System.out.println("checkuserStatus passé");
-                    if(userResult.next()) {
-                        System.out.println("user found in database");
-                        ref = userResult.getInt("ref_user");
-                        nom = userResult.getString("nom_user");
-                        prenom = userResult.getString("prenom_user");
-                        date = userResult.getString("date_user");
-                        System.out.println("date : " + date);
-                        statut = userResult.getString("statut_user");
-                    }
-                    else{
-                        throw new SQLException("no result");
-                    }
-
                     /*
-                    création de l'utilisateur courant
+                    si connection réussie, vérification du statut de l'utilisateur dans la base de données.
                      */
+                try {
+                    if (user.equals("admin")) { // utilisateur root pour tests
+                        System.out.println("root user admin");
+                        currentUser = new RootUser();
+                    } else {
+                        Utilisateur.createUserFromDataBase(user);
+                    }
 
-                    if (statut.equals("administrateur")){
-                        System.out.println("user is an admin");
-                        currentUser = new Administrateur(nom,prenom,date,ref);
-                    }
-                    else if (statut.equals("particulier")){
-                        System.out.println("user is a particulier");
-                        currentUser = new Particulier(nom,prenom,date,ref);
-                    }
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     EndConnection();
-                    JOptionPane.showMessageDialog(null,ex.getMessage(),"erreur",
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "erreur",
                             JOptionPane.WARNING_MESSAGE);
                 }
+
             }
         }
         else if(e.getSource() == dialog.getButtonDisconnect()){

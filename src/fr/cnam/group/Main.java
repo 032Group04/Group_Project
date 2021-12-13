@@ -95,48 +95,50 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (sqlConnect.getConnection() != null && sqlConnect.getConnection().isValid(0)) { // ajouter condition administrateur
+                        if (sqlConnect.getCurrentUser() instanceof Administrateur || sqlConnect.getCurrentUser() instanceof RootUser) {
+                            topMenu.getReturnToMain().setVisible(true);
+                            topMenu.getReturnToMain().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    myWindow.setContentPane(menu1.getMenuPrincipal());
+                                    topMenu.getReturnToMain().setVisible(false);
+                                }
+                            });
+                            /*menu ajouter une tache ou un materiel*/
+                            MenuAjouter menuAjouter = new MenuAjouter();
+                            myWindow.setContentPane(menuAjouter.getPanelAjouter());
 
-                        topMenu.getReturnToMain().setVisible(true);
-                        topMenu.getReturnToMain().addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                myWindow.setContentPane(menu1.getMenuPrincipal());
-                                topMenu.getReturnToMain().setVisible(false);
-                            }
-                        });
-                        /*menu ajouter une tache ou un materiel*/
-                        MenuAjouter menuAjouter = new MenuAjouter();
-                        myWindow.setContentPane(menuAjouter.getPanelAjouter());
+                            menuAjouter.getAjouterUserButton().addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
 
-                        menuAjouter.getAjouterUserButton().addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
+                                    /*ouverture du menu ajouter un utilisateur*/
+                                    AjouterUser ajouterUser = new AjouterUser();
+                                    myWindow.setContentPane(ajouterUser.getPanelAjouterUser());
+                                    ajouterUser.getValiderButton().addActionListener(new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            try {
+                                                int affectedRows = ajouterUser.ajouterUserQuery();
 
-                                /*ouverture du menu ajouter un utilisateur*/
-                                AjouterUser ajouterUser = new AjouterUser();
-                                myWindow.setContentPane(ajouterUser.getPanelAjouterUser());
-                                ajouterUser.getValiderButton().addActionListener(new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        try{
-                                            int affectedRows = ajouterUser.ajouterUserQuery();
+                                                if (affectedRows == 0) {
+                                                    JOptionPane.showMessageDialog(null, "aucun changement effectué");
+                                                } else {
+                                                    JOptionPane.showMessageDialog(null, String.format("%d colonne(s) affectée(s)", affectedRows));
 
-                                            if(affectedRows ==0){
-                                                JOptionPane.showMessageDialog(null,"aucun changement effectué");
+                                                }
+                                            } catch (SQLException err) {
+                                                JOptionPane.showMessageDialog(null, err.toString());
                                             }
-                                            else{
-                                                JOptionPane.showMessageDialog(null,String.format("%d colonne(s) affectée(s)", affectedRows));
 
-                                            }
-                                        } catch (SQLException err){
-                                            JOptionPane.showMessageDialog(null, err.toString());
                                         }
-
-                                    }
-                                });
-                            }
-                        });
-
+                                    });
+                                }
+                            });
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(myWindow,"only administrateurs can access this section","Accès Refusé",JOptionPane.ERROR_MESSAGE);
+                        }
 
                         // a transformer en ajouter entrée annuaire
 

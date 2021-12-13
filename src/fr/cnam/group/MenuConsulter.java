@@ -56,21 +56,12 @@ public class MenuConsulter {
         resultsTable.setAutoCreateRowSorter(true);
         connection = connect;
         choice = Choice.user;
-        choiceBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (choiceBox.getSelectedItem().toString() == "user") {
+        choiceBox.addActionListener(e -> {
+            if (choiceBox.getSelectedItem().toString() == "user") {
 
 
-                    userSearchPanel.setVisible(true);
-                    choice = Choice.user;
-                } /*else if (choiceBox.getSelectedItem().toString() == "annuaire") {
-
-                    userSearchPanel.setVisible(false);
-                    AnnuaireSearchPanel.setVisible(true);
-                    choice = Choice.annuaire;
-
-                }*/
+                userSearchPanel.setVisible(true);
+                choice = Choice.user;
             }
         });
 
@@ -94,17 +85,8 @@ public class MenuConsulter {
                         showThanks();
                         showResults(Main.sqlConnect.sendQuery( (selectAllBox.isSelected()) ? trySelect : createUserQuery() ) );
 
-                        //sendQuery("SELECT * FROM USERS");
+
                     }
-
-
-
-                    /* else if (choice == Choice.annuaire) {
-
-                        sendQuery(createAnnuaireQuery());
-                    }*/
-
-
                 } catch (SQLException err) {
                     System.out.println("erreur levée au bouton valider");
                     JOptionPane.showMessageDialog(null, err.toString());
@@ -210,84 +192,7 @@ public class MenuConsulter {
         }
     }
 
-   // à modifier pour annuaire
 
-    /*public String createAnnuaireQuery() {
-        System.out.println("debut creation materiel");
-        fullSelect = "SELECT * " +
-                "FROM materiel " +
-                "WHERE id_materiel = %d " +
-                "%s LOCATE('%s', nom_materiel) != 0 " +
-                "%s LOCATE('%s', taille_materiel) != 0 " +
-                "%s LOCATE('%s', description_materiel) !=0 " +
-                "%s nom_domaine = '%s' ";
-
-        String whereId = idMaterielField.getText();
-        int id;
-        try {
-            id = Integer.parseInt(whereId);
-        } catch (NumberFormatException err) {
-            id = -1;
-        }
-
-        String opNom = "OR";
-        String whereNom = nomMaterielField.getText();
-        if (whereNom == "" || whereNom.isEmpty()) {
-            whereNom = "///";
-        }
-
-        String opTaille = "OR";
-        String whereTaille = tailleMaterielField.getText();
-        if (whereTaille == "" || whereTaille.isEmpty()) {
-            whereTaille = "///";
-        }
-
-        String opDescription = "OR";
-        String description = descriptionMaterielField.getText();
-        System.out.println("description" + description + "suite");
-        if (description.isEmpty() || description == "") {
-            System.out.println("descript est vide");
-            description = "///";
-        }
-
-        String opDomaine = "OR";
-        String whereDomaine = domaineMaterielBox.getSelectedItem().toString();
-        if (whereDomaine.isEmpty()) System.out.println("wheredomaine est vide");
-
-        String opRenouvelable = "OR";
-        String renouvelable;
-
-        if (andNomMateriel.isSelected()) {
-            opNom = "AND";
-        }
-        if (andTailleMateriel.isSelected()) {
-            opTaille = "AND";
-        }
-        if (andDescriptionMateriel.isSelected()) {
-            opDescription = "AND";
-        }
-        if (andDomaineMateriel.isSelected()) {
-            opDomaine = "AND";
-        }
-        if (andRenouvelable.isSelected()) {
-            opRenouvelable = "AND";
-        }
-
-        if (renouvelableCheckBox.isSelected()) {
-            if (trueRadioButton.isSelected()) {
-                renouvelable = "true";
-            } else {
-                renouvelable = "false";
-            }
-            fullSelect += "%s renouvelable = %s ; ";
-            return String.format(fullSelect, id, opNom, whereNom, opTaille, whereTaille, opDescription, description, opDomaine, whereDomaine, opRenouvelable, renouvelable);
-        } else {
-            fullSelect += ";";
-            return String.format(fullSelect, id, opNom, whereNom, opTaille, whereTaille, opDescription, description, opDomaine, whereDomaine);
-        }
-
-
-    }*/
 
     public JPanel getConsultPane() {
         return consultPane;
