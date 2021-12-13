@@ -12,11 +12,10 @@ public class SQLConnexion implements ActionListener {
     public String driverPath = "org.apache.derby.jdbc.EmbeddedDriver";
     public static String defaultURL = "jdbc:derby:database";
     private ConnectDialog dialog;
-    private String host;
-    private String database;
+
     private String user;
     private String password;
-    private String url;
+
     private Connection connection;
 
     private Utilisateur currentUser;
@@ -39,6 +38,7 @@ public class SQLConnexion implements ActionListener {
             connection = DriverManager.getConnection(url, user, password);
             if (connection.isValid(0)) {
                 connection.setSchema("GROUP_DB");
+                //connection.setAutoCommit(false);
                 JOptionPane.showMessageDialog(null,"connexion réussie","succès",
                         JOptionPane.WARNING_MESSAGE);
 
@@ -53,24 +53,7 @@ public class SQLConnexion implements ActionListener {
 
 
     }
-    public boolean connect() {
-        try{
-            connection = DriverManager.getConnection(host,"admin","password");
-            if (connection.isValid(0)) {
-                JOptionPane.showMessageDialog(null,"connexion réussie","succès",
-                        JOptionPane.WARNING_MESSAGE);
 
-            }
-        }catch(SQLException err){
-            JOptionPane.showMessageDialog(null,"erreur de connexion","erreur",
-                    JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-
-        return true;
-
-
-    }
 
     public void EndConnection(){
         try {
@@ -94,6 +77,7 @@ public class SQLConnexion implements ActionListener {
 
             System.out.println(query);
             ResultSet resultTache = statement.executeQuery(query);
+
             return resultTache;
 
 

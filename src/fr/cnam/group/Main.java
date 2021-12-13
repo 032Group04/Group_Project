@@ -5,7 +5,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
+
 import java.sql.SQLException;
 
 public class Main {
@@ -47,6 +47,7 @@ public class Main {
         myWindow.setMinimumSize(new Dimension(600,600));
 
         sqlConnect = new SQLConnexion();
+
         //ouverture de la connexion à la bd
 
 
@@ -104,37 +105,12 @@ public class Main {
                                     topMenu.getReturnToMain().setVisible(false);
                                 }
                             });
-                            /*menu ajouter une tache ou un materiel*/
-                            MenuAjouter menuAjouter = new MenuAjouter();
-                            myWindow.setContentPane(menuAjouter.getPanelAjouter());
 
-                            menuAjouter.getAjouterUserButton().addActionListener(new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
+                           /*ouverture du menu ajouter un utilisateur*/
+                            AjouterUser ajouterUser = new AjouterUser();
+                            myWindow.setContentPane(ajouterUser.getPanelAjouterUser());
 
-                                    /*ouverture du menu ajouter un utilisateur*/
-                                    AjouterUser ajouterUser = new AjouterUser();
-                                    myWindow.setContentPane(ajouterUser.getPanelAjouterUser());
-                                    ajouterUser.getValiderButton().addActionListener(new ActionListener() {
-                                        @Override
-                                        public void actionPerformed(ActionEvent e) {
-                                            try {
-                                                int affectedRows = ajouterUser.ajouterUserQuery();
 
-                                                if (affectedRows == 0) {
-                                                    JOptionPane.showMessageDialog(null, "aucun changement effectué");
-                                                } else {
-                                                    JOptionPane.showMessageDialog(null, String.format("%d colonne(s) affectée(s)", affectedRows));
-
-                                                }
-                                            } catch (SQLException err) {
-                                                JOptionPane.showMessageDialog(null, err.toString());
-                                            }
-
-                                        }
-                                    });
-                                }
-                            });
                         }
                         else{
                             JOptionPane.showMessageDialog(myWindow,"only administrateurs can access this section","Accès Refusé",JOptionPane.ERROR_MESSAGE);

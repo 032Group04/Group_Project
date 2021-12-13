@@ -3,6 +3,8 @@ package fr.cnam.group;
 
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +33,24 @@ public class AjouterUser {
         connection = Main.sqlConnect.getConnection();
         query = "INSERT INTO USERS (nom_User, prenom_User, date_User) " +
                 "VALUES ('%s', '%s', '%s')";
+        validerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int affectedRows = ajouterUserQuery();
+
+                    if (affectedRows == 0) {
+                        JOptionPane.showMessageDialog(null, "aucun changement effectué");
+                    } else {
+                        JOptionPane.showMessageDialog(null, String.format("%d colonne(s) affectée(s)", affectedRows));
+
+                    }
+                } catch (SQLException err) {
+                    JOptionPane.showMessageDialog(null, err.toString());
+                }
+
+            }
+        });
     }
 
     public int ajouterUserQuery() throws SQLException {
@@ -57,6 +77,8 @@ public class AjouterUser {
             }
         }
     }
+
+
 
     public int checkId() throws SQLException {
         String selectQuery = "";

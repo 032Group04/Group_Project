@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MenuConsulter {
+
     private JPanel consultPane;
-
-
     private JPanel userSearchPanel;
     private JTextField nomUserField;
     private JTextField prenomField;
@@ -22,30 +21,13 @@ public class MenuConsulter {
     private JCheckBox andStatutUser;
     private JCheckBox andNomUser;
     private JCheckBox andDateUser;
-
-
-
     private JTable resultsTable;
-    private JComboBox choiceBox;
     private JButton validerButton;
-
-
-
-
     private JTextField thanksField;
     private JCheckBox selectAllBox;
-
-
     private Connection connection;
-
-
-
-    private enum Choice {user, annuaire}
-
-    ;
-    private Choice choice;
     private String fullSelect;
-    private ResultSet resultUser;
+
     private String trySelect = "SELECT * FROM USERS";
     private boolean firstQuery;
 
@@ -54,16 +36,10 @@ public class MenuConsulter {
         firstQuery = true;
         resultsTable.setVisible(false);
         resultsTable.setAutoCreateRowSorter(true);
+
         connection = connect;
-        choice = Choice.user;
-        choiceBox.addActionListener(e -> {
-            if (choiceBox.getSelectedItem().toString() == "user") {
 
 
-                userSearchPanel.setVisible(true);
-                choice = Choice.user;
-            }
-        });
 
         selectAllBox.addActionListener((listener) ->{
             if (selectAllBox.isSelected()){
@@ -81,12 +57,15 @@ public class MenuConsulter {
                 try {
 
                     System.out.println("bouton valider activé");
-                    if (choice == Choice.user ) {
-                        showThanks();
-                        showResults(Main.sqlConnect.sendQuery( (selectAllBox.isSelected()) ? trySelect : createUserQuery() ) );
+
+                    showThanks();
+                    System.out.println("autoCommit is :" + Main.sqlConnect.getConnection().getAutoCommit());
 
 
-                    }
+                    sendQuery((selectAllBox.isSelected()) ? trySelect : createUserQuery() );
+
+
+
                 } catch (SQLException err) {
                     System.out.println("erreur levée au bouton valider");
                     JOptionPane.showMessageDialog(null, err.toString());
@@ -105,12 +84,22 @@ public class MenuConsulter {
     }
 
 
-    public void showResults(ResultSet resultUser) throws SQLException {
-        ResultsTableModel resultsTableModel = new ResultsTableModel(resultUser);
-        resultsTable.setModel(resultsTableModel);
-        resultsTable.setVisible(true);
-        consultPane.updateUI();
+
+    public void sendQuery(String query) throws SQLException {
+        showThanks();
+        try (Statement statement = connection.createStatement()) {
+            fullSelect = query;
+            System.out.println(fullSelect);
+            ResultSet resultTache = statement.executeQuery(fullSelect);
+            ResultsTableModel resultsTableModel = new ResultsTableModel(resultTache);
+            resultsTable.setModel(resultsTableModel);
+            resultsTable.setVisible(true);
+            consultPane.updateUI();
+
+
+        }
     }
+
 
     public String createUserQuery() {
         System.out.println("debut creation query utilisateur");
@@ -198,9 +187,7 @@ public class MenuConsulter {
         return consultPane;
     }
 
-    public JComboBox getChoiceBox() {
-        return choiceBox;
-    }
+
 
     public JButton getValiderButton() {
         return validerButton;
