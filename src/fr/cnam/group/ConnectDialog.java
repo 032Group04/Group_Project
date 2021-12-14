@@ -18,11 +18,12 @@ public class ConnectDialog extends JDialog {
     private JLabel databaseLabel;
     private JTextField hostField;
     private JLabel hostLabel;
+    private JCheckBox inviteBox;
     private JButton validerButton;
 
-    public ConnectDialog(SQLConnexion sqlConnect) {
+    public ConnectDialog(SQLConnexion sqlConnect,MyWindow owner) {
         this.setSize(400, 300);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(owner);
         setContentPane(connexionPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -34,6 +35,25 @@ public class ConnectDialog extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        inviteBox.addActionListener(e -> {
+            if (inviteBox.isSelected()){
+                hostField.setVisible(false);
+                hostLabel.setVisible(false);
+                databaseField.setVisible(false);
+                databaseLabel.setVisible(false);
+                passwordField.setVisible(false);
+                passwordLabel.setVisible(false);
+            }
+            else{
+                hostField.setVisible(true);
+                hostLabel.setVisible(true);
+                databaseField.setVisible(true);
+                databaseLabel.setVisible(true);
+                passwordField.setVisible(true);
+                passwordLabel.setVisible(true);
+            }
+        });
+
 
         // call onCancel() on ESCAPE
         connexionPane.registerKeyboardAction(new ActionListener() {
@@ -43,6 +63,9 @@ public class ConnectDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public JCheckBox getInviteBox() {
+        return inviteBox;
+    }
 
     public JPanel getConnexionPane() {
         return connexionPane;

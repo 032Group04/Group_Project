@@ -10,20 +10,21 @@ public abstract class Utilisateur {
 
 
 
-    static String registerQuery = "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
+    static String registerUserAccessQuery = "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
             "    'derby.user.%s', '%s')"; //1st variable : user name; 2nd variable : password
     static String removeQuery =  "CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
             "    'derby.user.%s', null)";// variable : user name
-    private String identifiant;
-    public enum User_statut {Administrateur, Particulier, RootUser}
+    private String identifiant_user;
+    public enum User_statut {Administrateur, Particulier, RootUser, Invite}
     private String nom_user;
     private String prenom_user;
     private String date_user;
     private User_statut user_statut;
     private int ref_user;
-    private String setStatutQuery;
+    private static String setStatutQuery;
 
-    public Utilisateur(String nom, String prenom, String date, int ref) throws Exception {
+    public Utilisateur(String identifiant, String nom, String prenom, String date, int ref) throws Exception {
+        this.identifiant_user = identifiant;
         this.nom_user = nom;
         this.prenom_user = prenom;
         this.date_user = date;
@@ -40,19 +41,21 @@ public abstract class Utilisateur {
                 throw new Exception("user Status not found");
             }
         }
-        this.identifiant = nom+'_'+prenom+'_'+ref;
-
 
 
     }
+
+
 
     public User_statut checkUserStatut() throws SQLException {
         System.out.println("new Utilisateur: checking statut");
         String checkQuery = String.format("SELECT * FROM users \n" +
                 "WHERE ref_user = %d\n", ref_user);
-        ResultSet resultSet = null;
+
         try {
-            resultSet = Main.sqlConnect.sendQuery(checkQuery);
+            Statement statement = Main.sqlConnect.getConnection().createStatement();
+            System.out.println("checkUserStatut() : query =" + checkQuery);
+            ResultSet resultSet = statement.executeQuery(checkQuery);
             if(resultSet.next() && resultSet.getString("nom_user").equals(nom_user)) {
                 return User_statut.valueOf(resultSet.getString("statut_user"));
 
@@ -66,15 +69,13 @@ public abstract class Utilisateur {
 
     }
     public static Utilisateur createUserFromDataBase(String identifiant) throws Exception {
-        String[] userDatas = identifiant.split("_");
+
         Utilisateur utilisateur = null;
-        for (String s : userDatas) {
-            System.out.println("userData : " + s);
-        }
+
+
+
         String checkQuery = String.format("SELECT * FROM users \n" +
-                "WHERE nom_user = '%s'AND\n" +
-                "prenom_user = '%s' AND \n" +
-                "ref_user = %d", Utilisateur.formatNames(userDatas[0]), Utilisateur.formatNames(userDatas[1]), Integer.parseInt(userDatas[2]));
+                "WHERE identifiant_user = '%s'", identifiant);
 
         int ref;
         String nom;
@@ -83,9 +84,9 @@ public abstract class Utilisateur {
         User_statut statut;
 
         Statement statement = Main.sqlConnect.getConnection().createStatement();
-        System.out.println("query : " + checkQuery);
+        System.out.println("createUserFromDatabase() : query = " + checkQuery);
         ResultSet userResult = statement.executeQuery(checkQuery);
-        System.out.println("checkuserStatus passé");
+
         if (userResult.next()) {
             System.out.println("user found in database");
             ref = userResult.getInt("ref_user");
@@ -105,16 +106,19 @@ public abstract class Utilisateur {
 
         if (statut == User_statut.Administrateur) {
             System.out.println("user is an administrateur");
-            utilisateur = new Administrateur(nom, prenom, date, ref);
+            utilisateur = new Administrateur(identifiant, nom, prenom, date, ref);
         } else if (statut == User_statut.Particulier) {
             System.out.println("user is a particulier");
-            utilisateur = new Particulier(nom, prenom, date, ref);
+            utilisateur = new Particulier(identifiant,nom, prenom, date, ref);
         }
         userResult.close();
         return utilisateur;
 
     }
-    public boolean isDateFormatOk(String date)  {
+
+
+
+    public static boolean isDateFormatOk(String date)  {
         System.out.println("date checked : " + date);
         if (date.matches("^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\\d\\d$") ||
                  date.matches("^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$")){
@@ -147,7 +151,7 @@ public abstract class Utilisateur {
             }
             if (utilisateur.user_statut.equals(User_statut.Administrateur) && currentUser.user_statut.equals(User_statut.RootUser) || utilisateur.user_statut.equals(User_statut.Particulier)){
                 String AccessRightsQuery = String.format("CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(\n" +
-                        "    'derby.database.%s', '%s')", (newStatut.equals(User_statut.Administrateur)) ? "fullAccessUsers" : "readOnlyAccessUsers", utilisateur.identifiant );
+                        "    'derby.database.%s', '%s')", (newStatut.equals(User_statut.Administrateur)) ? "fullAccessUsers" : "readOnlyAccessUsers", utilisateur.identifiant_user);
 
                 Main.sqlConnect.sendUpdate(AccessRightsQuery);
                 String dataQuery = String.format("UPDATE USERS\n" +
@@ -160,40 +164,46 @@ public abstract class Utilisateur {
         }
     }
 
-//    public int checkId() throws SQLException {
-//        String selectQuery = "";
-//        int userId;
-//        ResultSet slct;
-//
-//        selectQuery = "SELECT ref_user FROM USERS \nWHERE nom_user = '" + nom_user + "' AND PRENOM_USER = '" + prenom_user +
-//                "' AND DATE_USER = '" + date_user  + "'";
-//
-//        System.out.println(selectQuery);
-//        try (Statement statement = Main.sqlConnect.getConnection().createStatement()) {
-//            slct = statement.executeQuery(selectQuery);
-//            if (slct.next()) {
-//                userId = slct.getInt("ref_user");
-//                System.out.println("id trouvée" + userId);
-//            } else {
-//                System.out.println("pas de next");
-//                userId = -1;
-//            }
-//        }
-//        return userId;
-//    }
+    public static int checkId(String nom, String prenom,String date) throws SQLException {
 
-    public void register(String password) throws SQLException{
-        String query = String.format(registerQuery,identifiant,password);
-        int test = Main.sqlConnect.sendUpdate(query) ;
-        System.out.println("return value of  register update query : " + test);
-        query = String.format(setStatutQuery, identifiant);
-        test = Main.sqlConnect.sendUpdate(query);
-        System.out.println("return value of restriction settings update query : " + test);
+
+
+        String selectQuery = String.format("SELECT ref_user FROM users \n"+
+                "WHERE nom_user = '%s'\n"+
+                "AND PRENOM_USER = '%s'\n" +
+                "AND DATE_USER = '%s'", nom, prenom, date);
+        int userId;
+        ResultSet slct;
+
+
+
+        System.out.println("checkId() : query = " +selectQuery);
+        try (Statement statement = Main.sqlConnect.getConnection().createStatement()) {
+            slct = statement.executeQuery(selectQuery);
+            if (slct.next()) {
+                userId = slct.getInt("ref_user");
+                System.out.println("id trouvée" + userId);
+            } else {
+                System.out.println("pas de next");
+                userId = -1;
+            }
+        }
+        return userId;
     }
-    public abstract void remove();
 
-    public String getIdentifiant() {
-        return identifiant;
+
+
+    public boolean remove() throws Exception {
+        String query = String.format(removeQuery, identifiant_user);
+        int affectedRows = Main.sqlConnect.sendUpdate(query);
+        if (affectedRows == 0){
+            throw new Exception("erreur suppression invité");
+        }
+        else return true;
+    }
+
+    public String getIdentifiant_user() {
+        return identifiant_user;
     }
 
     public int getRef_user() {

@@ -9,4 +9,10 @@
 * créer une classe d'exception RestrictedUserException
 * fusionner ref_user et identifiant
 * créer une classe SearchPane
+* normaliser format noms: tout minuscule dans identifiant; majuscule première lettre dans la bd et les objets
+* ajouter une option login invité et créer classe invité
+* rendre la base conflict-safe
+* ajouter une table invité pour compter nbr invités
+* fermer automatiquement login si connexion
+* ajouter un context aux fonctions affichant un dialog
 

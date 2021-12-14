@@ -1,36 +1,51 @@
-DROP TABLE USERS;
 
+
+
+
+-- creation bd
 CREATE TABLE users
 (
     ref_user    INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY (Start with 1, Increment by 1),
     nom_user    VARCHAR(50)                                                            NOT NULL,
     prenom_user VARCHAR(50)                                                            NOT NULL,
     date_user   DATE                                                                   NOT NULL,
-    statut_user VARCHAR(20) CHECK ( statut_user IN ('administrateur', 'particulier') ) NOT NULL
+    statut_user VARCHAR(20) CHECK ( statut_user IN ('Administrateur', 'Particulier') ) NOT NULL
 );
 
-INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
-VALUES ('Abitbol','Georges','11/23/1978','administrateur');
 
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Invite','Invite','01/01/2000','Particulier');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Baylac','Olivier','08/07/1989','Administrateur');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Abitbol','Georges','11/23/1978','Particulier');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Cartman','Eric','05/10/1991','Particulier');
+
+INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
+VALUES ('Sanchez','Rick','02/18/1961','Particulier');
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(     'derby.user.Baylac_Olivier_2', 'saumon');
+
+
+
+/*
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(     'derby.user.invite', null);
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.database.fullAccessUsers', 'baylac_olivier_administrateur');
+
+CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.user.baylac_olivier_administrateur', null);
 
 UPDATE users
 SET statut_user = 'particulier'
 WHERE ref_user = 1;
 
-
-INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
-VALUES ('Baylac','Olivier','08/07/1989','administrateur');
-
-INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
-VALUES ('Cartman','Eric','05/10/1991','particulier');
-
-INSERT INTO USERS(nom_user,prenom_user,date_user,statut_user)
-VALUES ('Sanchez','Rick','02/18/1961','particulier');
-
-SELECT * FROM users;
-
-CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(     'derby.user.baylac_olivier_2', 'password');
-
-CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.database.fullAccessUsers', 'baylac_olivier_administrateur');
-
-CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.user.baylac_olivier_administrateur', null);
+ */
+SELECT * from users;
+SELECT * FROM users
+WHERE nom_user = 'baylac'AND
+        prenom_user = 'olivier' AND
+        ref_user = 2

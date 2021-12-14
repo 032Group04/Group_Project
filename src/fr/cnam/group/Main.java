@@ -3,8 +3,7 @@ package fr.cnam.group;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import java.sql.SQLException;
 
@@ -67,8 +66,10 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if (sqlConnect.getConnection() != null && sqlConnect.getConnection().isValid(0)) {
+                    if (sqlConnect.getConnection() == null || sqlConnect.getCurrentUser() == null || !sqlConnect.getConnection().isValid(0)) {
+                        JOptionPane.showMessageDialog(myWindow, "vous n'êtes pas connecté","non connecté",JOptionPane.ERROR_MESSAGE);
 
+                    } else {
                         topMenu.getReturnToMain().setVisible(true);
                         topMenu.getReturnToMain().addActionListener(new ActionListener() {
                             @Override
@@ -81,11 +82,9 @@ public class Main {
                         MenuConsulter menuConsulter = new MenuConsulter(sqlConnect.getConnection());
                         System.out.println("test 2");
                         myWindow.setContentPane(menuConsulter.getConsultPane());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "vous n'êtes pas connecté à une base de données");
                     }
                 }catch (SQLException err){
-                    JOptionPane.showMessageDialog(null,err.toString());
+                    JOptionPane.showMessageDialog(myWindow,err.getMessage());
                 }
             }
         });
@@ -116,39 +115,7 @@ public class Main {
                             JOptionPane.showMessageDialog(myWindow,"only administrateurs can access this section","Accès Refusé",JOptionPane.ERROR_MESSAGE);
                         }
 
-                        // a transformer en ajouter entrée annuaire
 
-//                        menuAjouter.getAjouterMaterielButton().addActionListener(new ActionListener() {
-//                            @Override
-//                            public void actionPerformed(ActionEvent e) {
-//
-//                                /*menu ajouter materiel*/
-//                                AjouterMateriel ajouterMateriel = new AjouterMateriel();
-//                                myWindow.setContentPane(ajouterMateriel.getAjouterMaterielPanel());
-//                                ajouterMateriel.getValider().addActionListener(new ActionListener() {
-//                                    @Override
-//                                    public void actionPerformed(ActionEvent e) {
-//                                        try{
-//                                            int[] affectedRows = ajouterMateriel.ajouterMaterielQuery(sqlConnect.getConnection());
-//                                            int materielResult = affectedRows[0];
-//                                            int stockResult = affectedRows[1];
-//                                            if(materielResult ==0 && stockResult == 0){
-//                                                JOptionPane.showMessageDialog(null,"aucun changement effectué");
-//                                            }
-//                                            else if (stockResult > 0 && materielResult != 0){
-//                                                JOptionPane.showMessageDialog(null,String.format("%d colonne(s) materiel affectée(s) \n%d colonne(s) stock affectées.",
-//                                                        materielResult, stockResult));
-//                                            }
-//                                            else if(materielResult !=0 && stockResult == -1){
-//                                                JOptionPane.showMessageDialog(null,String.format("%d colonne(s) materiel affectée(s).", materielResult));
-//                                            }
-//                                        } catch (SQLException err){
-//                                            JOptionPane.showMessageDialog(null, err.toString());
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                        });//fin du listener menu ajouter materiel
 
 
                     } else {
@@ -160,7 +127,21 @@ public class Main {
             }
         });//fin du listener menu ajouter
 
+        myWindow.addWindowStateListener(e -> {
+            if (e.getNewState() == WindowEvent.WINDOW_CLOSING){
+                System.out.println("window closing");
 
+            }
+            else if(e.getNewState() == WindowEvent.WINDOW_CLOSED){
+                System.out.println("window closed");
+            }
+            else{
+                System.out.println("window event : " + e.getNewState());
+            }
+        });
+
+
+        myWindow.addWindowListener(sqlConnect);
 
 
         menu1.getQuitterButton().addActionListener(new ActionListener() {

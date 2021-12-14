@@ -26,36 +26,51 @@
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="16" parent="14" name="NOM_USER">
-      <DataType>VARCHAR(50)|12s</DataType>
+    <column id="16" parent="14" name="IDENTIFIANT_USER">
+      <DataType>VARCHAR(30)|12s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="17" parent="14" name="PRENOM_USER">
+    <column id="17" parent="14" name="NOM_USER">
       <DataType>VARCHAR(50)|12s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="18" parent="14" name="DATE_USER">
-      <DataType>DATE|91s</DataType>
+    <column id="18" parent="14" name="PRENOM_USER">
+      <DataType>VARCHAR(50)|12s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="19" parent="14" name="STATUT_USER">
-      <DataType>VARCHAR(20)|12s</DataType>
+    <column id="19" parent="14" name="DATE_USER">
+      <DataType>DATE|91s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <index id="20" parent="14" name="SQL0000000000-e3a74057-017d-ae27-e6e8-000007603bb0">
+    <column id="20" parent="14" name="STATUT_USER">
+      <DataType>VARCHAR(20)|12s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+    </column>
+    <index id="21" parent="14" name="SQL0000000001-e26d4047-017d-b953-f1c8-000007603bb0">
       <ColNames>REF_USER</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="21" parent="14" name="SQL0000000000-e3a74057-017d-ae27-e6e8-000007603bb0">
+    <index id="22" parent="14" name="SQL0000000002-3a7f0048-017d-b953-f1c8-000007603bb0">
+      <ColNames>IDENTIFIANT_USER</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="23" parent="14" name="SQL0000000001-e26d4047-017d-b953-f1c8-000007603bb0">
       <ColNames>REF_USER</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
-      <UnderlyingIndexName>SQL0000000000-e3a74057-017d-ae27-e6e8-000007603bb0</UnderlyingIndexName>
+      <UnderlyingIndexName>SQL0000000001-e26d4047-017d-b953-f1c8-000007603bb0</UnderlyingIndexName>
+    </key>
+    <key id="24" parent="14" name="SQL0000000002-3a7f0048-017d-b953-f1c8-000007603bb0">
+      <ColNames>IDENTIFIANT_USER</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <UnderlyingIndexName>SQL0000000002-3a7f0048-017d-b953-f1c8-000007603bb0</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
