@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Group_Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Group_Project_jar</output-path>
+    <root id="archive" name="Group_Project.jar">
+      <element id="module-output" name="Group_Project" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbynet.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbytools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbyrun.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derby.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbyclient.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbyoptionaltools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbyLocale_fr.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/db-derby-10.15.2.0-lib/db-derby-10.15.2.0-lib/lib/derbyshared.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
